@@ -321,17 +321,26 @@ void cMeasurementLoop::poll()
     if (this->m_fProximity)
         {
         gIqs620a.iqsRead();
+        delay (50);
         this->m_data.touchData.Ch0Data = gIqs620a.getCh0Data();
         this->m_data.touchData.Ch1Data = gIqs620a.getCh1Data();
         this->m_data.touchData.Ch2Data = gIqs620a.getCh2Data();
 
-        if (this->m_data.touchData.Ch0Data < 300 &&
-            this->m_data.touchData.Ch1Data < 300 &&
-            this->m_data.touchData.Ch2Data < 300)
+        if (this->m_data.touchData.Ch0Data < 200 &&
+            this->m_data.touchData.Ch1Data < 200 &&
+            this->m_data.touchData.Ch2Data < 200 &&
+            this->m_fTouchCount == false
+            )
             {
             this->m_data.touchData.touchCount = this->m_data.touchData.touchCount + 1;
-            this->m_data.flags |= Flags::TouchCount;
+            this->m_fTouchCount = true;
             }
+        else
+            {
+            this->m_fTouchCount = false;
+            }
+
+        this->m_data.flags |= Flags::TouchCount;
 
         this->m_data.amplitude.Amplitude = gIqs620a.getAmplitude();
         this->m_data.flags |= Flags::TouchProx;
