@@ -52,7 +52,6 @@ void cMeasurementLoop::begin()
         gCatena.SafePrintf("IQS620A Sensor found!\n");
         this->m_fProximity = true;
 
-        gIqs620a.setRdyPin(kReadyInterruptPin);
         this->m_data.touchData.touchCount = 0;
         }
 
@@ -278,7 +277,8 @@ void cMeasurementLoop::startTransmission(
     this->m_txpending = true;
     this->m_txcomplete = this->m_txerr = false;
 
-    if (! gLoRaWAN.SendBuffer(b.getbase(), b.getn(), sendBufferDoneCb, (void *)this, fConfirmed))
+    constexpr unsigned kUplinkPort = 1;
+    if (! gLoRaWAN.SendBuffer(b.getbase(), b.getn(), sendBufferDoneCb, (void *)this, fConfirmed, kUplinkPort))
         {
         // uplink wasn't launched.
         this->m_txcomplete = true;
@@ -326,9 +326,9 @@ void cMeasurementLoop::poll()
         this->m_data.touchData.Ch1Data = gIqs620a.getCh1Data();
         this->m_data.touchData.Ch2Data = gIqs620a.getCh2Data();
 
-        if (this->m_data.touchData.Ch0Data < 200 &&
-            this->m_data.touchData.Ch1Data < 200 &&
-            this->m_data.touchData.Ch2Data < 200 &&
+        if (this->m_data.touchData.Ch0Data < 320 &&
+            this->m_data.touchData.Ch1Data < 320 &&
+            this->m_data.touchData.Ch2Data < 320 &&
             this->m_fTouchCount == false
             )
             {

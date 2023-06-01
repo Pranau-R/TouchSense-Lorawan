@@ -38,7 +38,6 @@ extern McciCatena::Catena::LoRaWAN gLoRaWAN;
 extern McciCatena::StatusLed gLed;
 
 constexpr uint8_t kBoosterPowerOn       = D14;
-constexpr uint8_t kReadyInterruptPin    = D12;
 
 static inline void boostPowerOn(void)
     {
@@ -69,7 +68,7 @@ class cMeasurementFormat : public cMeasurementBase
     {
 public:
     // buffer size for uplink data
-    static constexpr size_t kTxBufferSize = 12;
+    static constexpr size_t kTxBufferSize = 18;
 
     // message format
     static constexpr uint8_t kMessageFormat = 0x30;
@@ -80,7 +79,7 @@ public:
             Vcc = 1 << 1,           // vBus
             Boot = 1 << 2,          // boot count
             TouchProx = 1 << 3,     // touch channel data
-            TouchCount = 1 << 7,    // touch counter
+            TouchCount = 1 << 4,    // touch counter
             };
 
     // the structure of a measurement
