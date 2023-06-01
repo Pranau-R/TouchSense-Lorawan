@@ -326,9 +326,9 @@ void cMeasurementLoop::poll()
         this->m_data.touchData.Ch1Data = gIqs620a.getCh1Data();
         this->m_data.touchData.Ch2Data = gIqs620a.getCh2Data();
 
-        if (this->m_data.touchData.Ch0Data < 320 &&
-            this->m_data.touchData.Ch1Data < 320 &&
-            this->m_data.touchData.Ch2Data < 320 &&
+        if (this->m_data.touchData.Ch0Data < 270 &&
+            this->m_data.touchData.Ch1Data < 270 &&
+            this->m_data.touchData.Ch2Data < 270 &&
             this->m_fTouchCount == false
             )
             {
