@@ -84,18 +84,15 @@ cMeasurementLoop::fillTxBuffer(
 
     if ((this->m_data.flags & Flags::TouchProx) !=  Flags(0))
         {
-        int16_t channel0 = mData.touchData.Ch0Data;
         int16_t channel1 = mData.touchData.Ch1Data;
         int16_t channel2 = mData.touchData.Ch2Data;
         int16_t amplitude = mData.amplitude.Amplitude;
         // // Touch Channel Data and Hall Effect Amplitude
-        gCatena.SafePrintf("IQS620A:     Ch0: %d  Ch1: %d  Ch2: %d  Amplitude: %d\n",
-                channel0,
+        gCatena.SafePrintf("IQS620A:     Ch1: %d  Ch2: %d  Amplitude: %d\n",
                 channel1,
                 channel2,
                 amplitude
                 );
-        b.put2uf(channel0);
         b.put2uf(channel1);
         b.put2uf(channel2);
         b.put2sf(amplitude);
@@ -103,13 +100,19 @@ cMeasurementLoop::fillTxBuffer(
 
     if ((this->m_data.flags & Flags::TouchCount) !=  Flags(0))
         {
-        int16_t touchCount = mData.touchData.touchCount;
-        // // Touch Channel Data
-        gCatena.SafePrintf("TOUCH COUNT:  %d\n",
-                touchCount
+        int16_t leftTouchCounter = mData.touchData.touchCountLeft;
+        // Touch Channel Data
+        gCatena.SafePrintf("TOUCH COUNT LEFT:  %d\n",
+                leftTouchCounter
                 );
-        b.put2uf(touchCount);
-        }
+        b.put2uf(leftTouchCounter);
 
+        int16_t rightTouchCounter = mData.touchData.touchCountRight;
+        // Touch Channel Data
+        gCatena.SafePrintf("TOUCH COUNT RIGHT:  %d\n",
+                rightTouchCounter
+                );
+        b.put2uf(rightTouchCounter);
+        }
     gLed.Set(McciCatena::LedPattern::Off);
     }

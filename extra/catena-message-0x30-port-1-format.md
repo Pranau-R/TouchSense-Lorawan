@@ -42,7 +42,7 @@ Field number (Bitmap bit) | Length of corresponding field (bytes) | Data format 
 1 | 2 | [int16](#int16) | [Bus voltage](#bus-voltage-field-1)
 2 | 1 | [uint8](#uint8) | [Boot counter](#boot-counter-field-2)
 3 | 8 | [uint16](#uint16), [uint16](#uint16), [uint16](#uint16), [int16](#int16) | [Touch data channel0, Touch data channel1, Touch data channel2, Hall effect amplitude](#touch-data-and-amplitude-field-3)
-4 | 2 | [uint16](#uint16) | [Touch count](#touch-count-field-4)
+4 | 4 | [uint16](#uint16), [uint16](#uint16) | [Touch count left, Touch count right](#touch-count-field-4)
 5,6,7 | n/a | n/a | reserved, must always be zero.
 
 ### Battery Voltage (field 0)
@@ -69,7 +69,9 @@ Field 3, if present, is consists of 4 data of 8 bytes:
 
 ### Touch Count (field 4)
 
-Field 4, if present, is a counter of numbers of recorded touch data. It is 2 bytes of [`uint16`](#uint16).
+Field 4, if present, is consists of 4 bytes data of:
+ - a counter of numbers of recorded left side touch data. It is 2 bytes of [`uint16`](#uint16).
+ - a counter of numbers of recorded right side touch data. It is 2 bytes of [`uint16`](#uint16).
 
 ## Data Formats
 

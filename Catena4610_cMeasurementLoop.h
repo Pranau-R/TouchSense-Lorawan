@@ -92,10 +92,10 @@ public:
         // Touch Channel Data
         struct TouchData
             {
-            int16_t                     Ch0Data;
             int16_t                     Ch1Data;
             int16_t                     Ch2Data;
-            int16_t                     touchCount;
+            int16_t                     touchCountLeft;
+            int16_t                     touchCountRight;
             };
 
         // Hall Effect Amplitude

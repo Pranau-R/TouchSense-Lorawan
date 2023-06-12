@@ -89,19 +89,19 @@ function Decoder(bytes, port) {
     }
 
     if (flags & 0x8) {
-        // Channel0 data
-        decoded.sarCh0 = DecodeU16(Parse);
         // Channel1 data
-        decoded.sarCh1 = DecodeU16(Parse);
+        decoded.ch1 = DecodeU16(Parse);
         // Channel2 data
-        decoded.sarCh2 = DecodeU16(Parse);
+        decoded.ch2 = DecodeU16(Parse);
         // Hall Effect Amplitude
         decoded.amplitude = DecodeI16(Parse);
     }
 
     if (flags & 0x10) {
-        // Touch Count
-        decoded.touchCount = DecodeU16(Parse);
+        // Touch Count Left
+        decoded.touchCountLeft = DecodeU16(Parse);
+        // Touch Count Right
+        decoded.touchCountRight = DecodeU16(Parse);
     }
 
     // at this point, decoded has the real values.

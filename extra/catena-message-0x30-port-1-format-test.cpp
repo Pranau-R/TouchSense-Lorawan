@@ -32,16 +32,16 @@ struct val
 // Touch Channel Data
 struct touchData
     {
-    int16_t ch0;
     int16_t ch1;
     int16_t ch2;
-    int16_t touchCount;
+    int16_t amplitude;
     };
 
-// Hall Effect Amplitude
-struct hallEffect
+// Touch Counter
+struct counter
     {
-    int16_t amplitude;
+    int16_t touchCountLeft;
+    int16_t touchCountRight;
     };
 
 struct Measurements
@@ -51,7 +51,7 @@ struct Measurements
     val<float> Vbus;
     val<std::uint8_t> Boot;
     val<touchData> TouchData;
-    val<hallEffect> Amplitude;
+    val<counter> TouchCount;
     };
 
 std::uint16_t encode16s(float v)
@@ -145,17 +145,17 @@ void encodeMeasurement(Buffer &buf, Measurements &m)
         {
         flags |= 1 << 3;
 
-        buf.push_back_be(encodeT(m.TouchData.v.ch0));
-        buf.push_back_be(encodeT(m.TouchData.v.ch1));
-        buf.push_back_be(encodeT(m.TouchData.v.ch2));
-        buf.push_back_be(encodeT(m.Amplitude.v.amplitude));
+        buf.push_back_be(encodeChannel(m.TouchData.v.ch1));
+        buf.push_back_be(encodeChannel(m.TouchData.v.ch2));
+        buf.push_back_be(encodeAmplitude(m.TouchData.v.amplitude));
         }
 
-    if (m.Amplitude.fValid)
+    if (m.TouchCount.fValid)
         {
         flags |= 1 << 4;
 
-        buf.push_back_be(encodeT(m.TouchData.v.touchCount));
+        buf.push_back_be(encodeTouch(m.TouchCount.v.touchCountLeft));
+        buf.push_back_be(encodeTouch(m.TouchCount.v.touchCountRight));
         }
 
     // update the flags
@@ -201,15 +201,15 @@ void logMeasurement(Measurements &m)
 
     if (m.TouchData.fValid)
         {
-        std::cout << pad.get() << "Channel0 " << m.TouchData.v.ch0;
         std::cout << pad.get() << "Channel1 " << m.TouchData.v.ch1;
         std::cout << pad.get() << "Channel2 " << m.TouchData.v.ch2;
-        std::cout << pad.get() << "Amplitude " << m.Amplitude.v.amplitude;
+        std::cout << pad.get() << "Amplitude " << m.TouchData.v.amplitude;
         }
 
-    if (m.Amplitude.fValid)
+    if (m.TouchCount.fValid)
         {
-        std::cout << pad.get() << "TouchCount " << m.TouchData.v.touchCount;
+        std::cout << pad.get() << "LeftTouchCounter " << m.TouchCount.v.touchCountLeft;
+        std::cout << pad.get() << "RightTouchCounter " << m.TouchCount.v.touchCountRight;
         }
 
     // make the syntax cut/pastable.
@@ -269,11 +269,6 @@ int main(int argc, char **argv)
             m.Boot.v = (std::uint8_t) nonce;
             m.Boot.fValid = true;
             }
-        else if (key == "Channel0")
-            {
-            std::cin >> m.TouchData.v.ch0;
-            m.TouchData.fValid = true;
-            }
         else if (key == "Channel1")
             {
             std::cin >> m.TouchData.v.ch1;
@@ -286,13 +281,18 @@ int main(int argc, char **argv)
             }
         else if (key == "Amplitude")
             {
-            std::cin >> m.Amplitude.v.amplitude;
-            m.Amplitude.fValid = true;
-            }
-        else if (key == "TouchCount")
-            {
-            std::cin >> m.TouchData.v.touchCount;
+            std::cin >> m.TouchData.v.amplitude;
             m.TouchData.fValid = true;
+            }
+        else if (key == "LeftTouchCounter")
+            {
+            std::cin >> m.TouchCount.v.touchCountLeft;
+            m.TouchCount.fValid = true;
+            }
+        else if (key == "RightTouchCounter")
+            {
+            std::cin >> m.TouchCount.v.touchCountRight;
+            m.TouchCount.fValid = true;
             }
         else if (key == ".")
             {

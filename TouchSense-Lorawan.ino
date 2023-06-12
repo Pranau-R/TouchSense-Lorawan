@@ -36,7 +36,7 @@ static_assert(
     "This sketch requires Catena-Arduino-Platform v0.21.0-5 or later"
     );
 
-static const char sVersion[] = "1.0.0";
+static const char sVersion[] = "1.1.0";
 
 /****************************************************************************\
 |

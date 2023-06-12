@@ -52,7 +52,8 @@ void cMeasurementLoop::begin()
         gCatena.SafePrintf("IQS620A Sensor found!\n");
         this->m_fProximity = true;
 
-        this->m_data.touchData.touchCount = 0;
+        this->m_data.touchData.touchCountLeft = 0;
+        this->m_data.touchData.touchCountRight = 0;
         }
 
     // start (or restart) the FSM.
@@ -322,17 +323,32 @@ void cMeasurementLoop::poll()
         {
         gIqs620a.iqsRead();
         delay (50);
-        this->m_data.touchData.Ch0Data = gIqs620a.getCh0Data();
         this->m_data.touchData.Ch1Data = gIqs620a.getCh1Data();
         this->m_data.touchData.Ch2Data = gIqs620a.getCh2Data();
 
-        if (this->m_data.touchData.Ch0Data < 270 &&
-            this->m_data.touchData.Ch1Data < 270 &&
+        if (this->m_data.touchData.Ch1Data < 400 &&
             this->m_data.touchData.Ch2Data < 270 &&
             this->m_fTouchCount == false
             )
             {
-            this->m_data.touchData.touchCount = this->m_data.touchData.touchCount + 1;
+            this->m_data.touchData.touchCountLeft = this->m_data.touchData.touchCountLeft + 1;
+            this->m_data.touchData.touchCountRight = this->m_data.touchData.touchCountRight + 1;
+            this->m_fTouchCount = true;
+            }
+        else if (
+            this->m_data.touchData.Ch1Data < 400 &&
+            this->m_fTouchCount == false
+            )
+            {
+            this->m_data.touchData.touchCountRight = this->m_data.touchData.touchCountRight + 1;
+            this->m_fTouchCount = true;
+            }
+        else if (
+            this->m_data.touchData.Ch2Data < 270 &&
+            this->m_fTouchCount == false
+            )
+            {
+            this->m_data.touchData.touchCountLeft = this->m_data.touchData.touchCountLeft + 1;
             this->m_fTouchCount = true;
             }
         else

@@ -89,8 +89,6 @@ function Decoder(bytes, port) {
     }
 
     if (flags & 0x8) {
-        // Channel0 data
-        decoded.ch0 = DecodeU16(Parse);
         // Channel1 data
         decoded.ch1 = DecodeU16(Parse);
         // Channel2 data
@@ -100,8 +98,10 @@ function Decoder(bytes, port) {
     }
 
     if (flags & 0x10) {
-        // Touch Count
-        decoded.touchCount = DecodeU16(Parse);
+        // Touch Count Left
+        decoded.touchCountLeft = DecodeU16(Parse);
+        // Touch Count Right
+        decoded.touchCountRight = DecodeU16(Parse);
     }
 
     // at this point, decoded has the real values.
